@@ -12,7 +12,6 @@ String parseCalculator(String input) {
           var tokenOne = double.parse(tokens[j - 1]);
           var tokenTwo = double.parse(tokens[j + 1]);
           var combined = functions[i](tokenOne, tokenTwo);
-          print(combined);
           tokens[j - 1] = combined.toString();
           for (var k = 0; k < 2; k++) {
             tokens.removeAt(j);

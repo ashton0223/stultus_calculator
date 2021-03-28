@@ -13,6 +13,24 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Stultus Calculator',
       home: HomePage(title: 'Stultus Calculator'),
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          textTheme: TextTheme(
+            title: TextStyle(
+              fontSize: 32,
+              color: Colors.white70,
+            ),
+          ),
+        ),
+        textTheme: TextTheme(
+          body1: TextStyle(
+            fontSize: 32,
+            color: Colors.white70,
+          ),
+        ),
+        scaffoldBackgroundColor: Colors.black54,
+        primaryColor: Colors.deepPurple,
+      ),
     );
   }
 }
@@ -28,7 +46,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Center(child: Text(title)),
       ),
       body: Calculator(),
     );

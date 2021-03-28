@@ -33,76 +33,98 @@ class Calculator extends StatefulWidget {
 
 class _CalculatorState extends State<Calculator> {
   String _calcView = '';
+  double _sizeMultiplier = 1;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(_calcView),
-        ),
         Expanded(
-          child: GridView.builder(
-            physics: ClampingScrollPhysics(),
-            itemCount: buttons.length,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-            itemBuilder: (BuildContext context, int index) {
-              String b = buttons[index];
-              var func;
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              _calcView,
+              textAlign: TextAlign.right,
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .apply(fontSizeFactor: 1.5 * _sizeMultiplier),
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            height: 520,
+            child: GridView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: buttons.length,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+              itemBuilder: (BuildContext context, int index) {
+                String b = buttons[index];
+                var func;
 
-              // Handling different keys
-              if (b == 'C') {
-                func = () {
-                  setState(() {
-                    _calcView = '';
-                  });
-                };
-              } else if (b == 'DEL') {
-                func = () {
-                  setState(() {
-                    String _substr;
-                    if (_calcView.length < 1) {
-                      _substr = '';
-                    } else {
-                      _substr = _calcView.substring(
-                          _calcView.length - 1, _calcView.length);
-                    }
-                    if (_substr == " ") {
-                      _calcView = _calcView.substring(0, _calcView.length - 3);
-                    } else if (_substr != '') {
-                      _calcView = _calcView.substring(0, _calcView.length - 1);
-                    }
-                  });
-                };
-              } else if (b == '+' || b == '-' || b == 'x' || b == '/') {
-                func = () {
-                  setState(() {
-                    _calcView += ' ' + b + ' ';
-                  });
-                };
-              } else if (b == '=') {
-                func = () {
-                  setState(() {
-                    _calcView = parseCalculator(randomizeInput(_calcView));
-                  });
-                };
-              } else {
-                func = () {
-                  setState(() {
-                    _calcView += b;
-                  });
-                };
-              }
+                // Handling different keys
+                if (b == 'C') {
+                  func = () {
+                    setState(() {
+                      _calcView = '';
+                    });
+                  };
+                } else if (b == 'DEL') {
+                  func = () {
+                    setState(() {
+                      String _substr;
+                      if (_calcView.length < 1) {
+                        _substr = '';
+                      } else {
+                        _substr = _calcView.substring(
+                            _calcView.length - 1, _calcView.length);
+                      }
+                      if (_substr == " ") {
+                        _calcView =
+                            _calcView.substring(0, _calcView.length - 3);
+                      } else if (_substr != '') {
+                        _calcView =
+                            _calcView.substring(0, _calcView.length - 1);
+                      }
+                    });
+                  };
+                } else if (b == '=') {
+                  func = () {
+                    setState(() {
+                      _calcView = parseCalculator(randomizeInput(_calcView));
+                    });
+                  };
+                } else if (b == '+' || b == '-' || b == 'x' || b == '/') {
+                  func = () {
+                    setState(() {
+                      _calcView += ' ' + b + ' ';
+                    });
+                  };
+                } else {
+                  func = () {
+                    setState(() {
+                      _calcView += b;
+                    });
+                  };
+                }
 
-              return CalculatorButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).accentColor,
-                text: buttons[index],
-                tapped: func,
-              );
-            },
+                // Change size multiplier in case there are too many #s
+                if (_calcView.length > 12) {
+                  _sizeMultiplier = 10 / (_calcView.length - 3);
+                } else {
+                  _sizeMultiplier = 1;
+                }
+
+                return CalculatorButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).accentColor,
+                  text: buttons[index],
+                  tapped: func,
+                );
+              },
+            ),
           ),
         ),
       ],
