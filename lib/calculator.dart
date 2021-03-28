@@ -34,6 +34,7 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String _calcView = '';
   double _sizeMultiplier = 1;
+  bool _equalFlag = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +70,13 @@ class _CalculatorState extends State<Calculator> {
                   func = () {
                     setState(() {
                       _calcView = '';
+                      _equalFlag = false;
                     });
                   };
                 } else if (b == 'DEL') {
                   func = () {
                     setState(() {
+                      _equalFlag = false;
                       String _substr;
                       if (_calcView.length < 1) {
                         _substr = '';
@@ -94,18 +97,25 @@ class _CalculatorState extends State<Calculator> {
                   func = () {
                     setState(() {
                       _calcView = parseCalculator(randomizeInput(_calcView));
+                      _equalFlag = true;
                     });
                   };
                 } else if (b == '+' || b == '-' || b == 'x' || b == '/') {
                   func = () {
                     setState(() {
+                      _equalFlag = false;
                       _calcView += ' ' + b + ' ';
                     });
                   };
                 } else {
                   func = () {
                     setState(() {
-                      _calcView += b;
+                      if (_equalFlag) {
+                        _calcView = b;
+                      } else {
+                        _calcView += b;
+                      }
+                      _equalFlag = false;
                     });
                   };
                 }
