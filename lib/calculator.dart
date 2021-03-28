@@ -43,12 +43,15 @@ class _CalculatorState extends State<Calculator> {
         Expanded(
           child: Align(
             alignment: Alignment.centerRight,
-            child: Text(
-              _calcView,
-              textAlign: TextAlign.right,
-              style: DefaultTextStyle.of(context)
-                  .style
-                  .apply(fontSizeFactor: 1.5 * _sizeMultiplier),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                _calcView,
+                textAlign: TextAlign.right,
+                style: DefaultTextStyle.of(context)
+                    .style
+                    .apply(fontSizeFactor: 1.5 * _sizeMultiplier),
+              ),
             ),
           ),
         ),
